@@ -126,8 +126,8 @@ GET    /api/v1/dashboard/by-category?month=2026-07  # dados prontos pro gráfico
 
 - [x] Senhas com `bcrypt` (nunca texto plano ou hash fraco)
 - [x] JWT em cookie `httpOnly; Secure; SameSite=Strict` (não em localStorage; `Secure` ativo em produção)
-- [ ] Validação de todo input com Zod antes de tocar no banco (feito: auth; falta: categories/transactions)
-- [ ] Toda query de `transactions`/`categories` filtrada por `userId` do token — nunca do body
+- [x] Validação de todo input com Zod antes de tocar no banco
+- [x] Toda query de `transactions`/`categories` filtrada por `userId` do token — nunca do body
 - [x] Variáveis sensíveis (`DATABASE_URL`, `JWT_SECRET`) em `.env`, nunca commitadas
 - [x] `.env` no `.gitignore` desde o primeiro commit
 - [x] Rate limiting básico nas rotas de auth (evita brute-force de login)
