@@ -50,7 +50,7 @@ npm run dev             # SPA em http://localhost:5173
 - [x] Setup do projeto, schema Prisma, migration inicial, seed de teste
 - [x] Auth (registro, login, refresh, logout, me) + middleware de autenticação + rate limiting
 - [x] CRUD de categorias e transações + validação Zod
-- [ ] Endpoints de dashboard (agregações)
+- [x] Endpoints de dashboard (agregações)
 - [ ] Frontend: login, transações, formulários, gráficos
 - [ ] Deploy
 - [ ] Testes automatizados
