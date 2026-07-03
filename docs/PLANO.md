@@ -124,14 +124,14 @@ GET    /api/v1/dashboard/by-category?month=2026-07  # dados prontos pro gráfico
 
 ## 4. Segurança (checklist a aplicar desde o início)
 
-- [ ] Senhas com `bcrypt` (nunca texto plano ou hash fraco)
-- [ ] JWT em cookie `httpOnly; Secure; SameSite=Strict` (não em localStorage)
-- [ ] Validação de todo input com Zod antes de tocar no banco
+- [x] Senhas com `bcrypt` (nunca texto plano ou hash fraco)
+- [x] JWT em cookie `httpOnly; Secure; SameSite=Strict` (não em localStorage; `Secure` ativo em produção)
+- [ ] Validação de todo input com Zod antes de tocar no banco (feito: auth; falta: categories/transactions)
 - [ ] Toda query de `transactions`/`categories` filtrada por `userId` do token — nunca do body
-- [ ] Variáveis sensíveis (`DATABASE_URL`, `JWT_SECRET`) em `.env`, nunca commitadas
+- [x] Variáveis sensíveis (`DATABASE_URL`, `JWT_SECRET`) em `.env`, nunca commitadas
 - [x] `.env` no `.gitignore` desde o primeiro commit
-- [ ] Rate limiting básico nas rotas de auth (evita brute-force de login)
-- [ ] Mensagens de erro genéricas pro cliente; detalhes só em log de servidor
+- [x] Rate limiting básico nas rotas de auth (evita brute-force de login)
+- [x] Mensagens de erro genéricas pro cliente; detalhes só em log de servidor
 
 ---
 

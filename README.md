@@ -48,7 +48,7 @@ npm run dev             # SPA em http://localhost:5173
 ## Progresso
 
 - [x] Setup do projeto, schema Prisma, migration inicial, seed de teste
-- [ ] Auth (registro, login, refresh) + middleware de autenticação
+- [x] Auth (registro, login, refresh, logout, me) + middleware de autenticação + rate limiting
 - [ ] CRUD de categorias e transações + validação Zod
 - [ ] Endpoints de dashboard (agregações)
 - [ ] Frontend: login, transações, formulários, gráficos
