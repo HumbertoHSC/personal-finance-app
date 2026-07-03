@@ -1,0 +1,59 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String        @id @default(cuid())
+  email        String        @unique
+  passwordHash String
+  name         String
+  createdAt    DateTime      @default(now())
+  categories   Category[]
+  transactions Transaction[]
+
+  @@index([createdAt])
+}
+
+model Category {
+  id           String        @id @default(cuid())
+  name         String
+  type         CategoryType
+  userId       String
+  user         User          @relation(fields: [userId], references: [id])
+  transactions Transaction[]
+  createdAt    DateTime      @default(now())
+
+  @@unique([userId, name]) // evita categorias duplicadas por usuário
+  @@index([userId])
+}
+
+model Transaction {
+  id          String          @id @default(cuid())
+  description String
+  amount      Decimal         @db.Decimal(10, 2) // nunca usar Float para dinheiro
+  type        TransactionType
+  date        DateTime
+  userId      String
+  user        User            @relation(fields: [userId], references: [id])
+  categoryId  String
+  category    Category        @relation(fields: [categoryId], references: [id])
+  createdAt   DateTime        @default(now())
+
+  @@index([userId, date]) // consultas por período são o caso de uso mais comum
+  @@index([categoryId])
+}
+
+enum CategoryType {
+  INCOME
+  EXPENSE
+}
+
+enum TransactionType {
+  INCOME
+  EXPENSE
+}
