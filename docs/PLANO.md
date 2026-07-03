@@ -15,8 +15,8 @@ App fullstack de controle financeiro pessoal: cadastro de receitas/despesas, cat
 | Banco | PostgreSQL | Você já tem no stack; relacional combina com dados financeiros |
 | Auth | JWT + bcrypt | Padrão de mercado, simples de implementar bem |
 | Validação | Zod | Schemas reutilizáveis entre validação de entrada e tipos |
-| Frontend | React + Vite | Mais rápido de configurar que CRA; SPA simples é suficiente |
-| Gráficos | Chart.js (react-chartjs-2) | Barato de implementar, resultado visual bom |
+| Frontend | React + Vite + React Router | Mais rápido de configurar que CRA; SPA simples é suficiente |
+| Gráficos | Tabela HTML + barra em CSS (sem lib) | Acessível por padrão (sem canvas), mais leve que Chart.js para um único gráfico de ranking — ver README § Decisões técnicas |
 | Deploy backend | Render ou Railway | Free tier com Postgres incluso |
 | Deploy frontend | Vercel | Deploy de SPA trivial |
 
@@ -155,10 +155,12 @@ financa-simples/
 │   └── package.json
 ├── frontend/
 │   ├── src/
-│   │   ├── components/
-│   │   ├── pages/              # Login, Dashboard, Transactions, Categories
+│   │   ├── components/          # Layout, ProtectedRoute, TransactionForm, StatTile...
+│   │   ├── pages/               # Login, Dashboard, Transactions, Categories
+│   │   ├── context/AuthContext.tsx  # sessão via /auth/me + login/register/logout
 │   │   ├── hooks/
-│   │   ├── services/api.ts     # client HTTP centralizado
+│   │   ├── services/            # api.ts (client HTTP) + auth/categories/transactions/dashboard
+│   │   ├── types/api.ts         # tipos compartilhados com o backend
 │   │   └── App.tsx
 │   └── package.json
 └── README.md
