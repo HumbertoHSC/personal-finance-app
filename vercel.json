@@ -6,6 +6,8 @@
     },
     "backend": {
       "root": "backend",
+      "framework": "express",
+      "entrypoint": "src/server.ts",
       "buildCommand": "npx prisma generate"
     }
   },
