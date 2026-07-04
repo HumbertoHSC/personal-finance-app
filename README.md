@@ -48,7 +48,7 @@ npm install
 npm run dev             # SPA em http://localhost:5173
 ```
 
-Com o backend rodando, faça login com o usuário demo (`demo@financasimples.dev` / `demo1234`) ou cadastre uma conta nova.
+Sem fazer login, o Dashboard, Transações e Categorias já aparecem com **dados fictícios** mantidos só na memória do navegador — dá pra criar, editar e excluir à vontade pra sentir o app, nada é salvo (some ao recarregar a página). Fazendo login (`demo@financasimples.dev` / `demo1234`, ou uma conta nova), as mesmas telas passam a mostrar os dados reais da API, só os seus.
 
 ## Deploy
 
@@ -69,6 +69,7 @@ Como frontend e backend ficam no mesmo domínio (same-origin), **não é preciso
 - **Sem Chart.js no dashboard.** O gráfico de despesas/receitas por categoria é uma tabela HTML real (`<table>`) com uma barra desenhada em CSS por linha — não canvas. Isso dá acessibilidade de graça (leitor de tela lê categoria + valor normalmente, sem precisar de um toggle "ver como tabela" separado) e evita uma dependência só para um gráfico de barras horizontal. A cor da barra (`#2a78d6` claro / `#3987e5` escuro) foi validada contra contraste, banda de luminosidade e croma antes de entrar no código.
 - **JWT em cookie `httpOnly`, não em `localStorage`.** Protege contra roubo de token via XSS.
 - **Frontend e backend no mesmo domínio (Vercel Services), não em domínios separados.** Elimina CORS entre eles e permite `SameSite=Strict` no cookie sem fricção — a alternativa (backend num host, frontend em outro) exigiria `SameSite=None` ou configuração extra de CORS com credentials, superfície de ataque maior pra um ganho nenhum aqui.
+- **Dados fictícios no lugar de exigir login.** Quem visita o app sem conta vê o Dashboard/Transações/Categorias populados com dados de exemplo, com CRUD funcionando em memória (`frontend/src/services/demo.ts`) — sem tocar a API real nem persistir nada. Ao logar, as mesmas páginas trocam para os dados reais do usuário. Existe pra quem só quer clicar e ver o app funcionando, sem precisar criar conta antes.
 
 ## Progresso
 

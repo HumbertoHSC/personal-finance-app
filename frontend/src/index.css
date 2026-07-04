@@ -128,6 +128,19 @@ h3 {
   color: var(--text-secondary);
 }
 
+.demo-banner {
+  padding: 10px 24px;
+  background: var(--series-1-wash);
+  color: var(--text-secondary);
+  font-size: 13px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+}
+
+.demo-banner a {
+  font-weight: 600;
+}
+
 .app-main {
   flex: 1;
   width: 100%;

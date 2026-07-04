@@ -1,12 +1,17 @@
 import { useEffect, useState } from 'react';
 import { CategoryBarTable } from '../components/CategoryBarTable';
 import { StatTile } from '../components/StatTile';
+import { useAuth } from '../context/AuthContext';
 import { formatApiError } from '../lib/format-error';
 import { currentMonth, formatCurrency } from '../lib/format';
 import { dashboardApi } from '../services/dashboard';
+import { demoDashboardApi } from '../services/demo';
 import type { CategoryTotal, DashboardSummary } from '../types/api';
 
 export function DashboardPage() {
+  const { user } = useAuth();
+  const service = user ? dashboardApi : demoDashboardApi;
+
   const [month, setMonth] = useState(currentMonth());
   const [summary, setSummary] = useState<DashboardSummary | null>(null);
   const [categories, setCategories] = useState<CategoryTotal[]>([]);
@@ -16,14 +21,14 @@ export function DashboardPage() {
   useEffect(() => {
     setLoading(true);
     setError(null);
-    Promise.all([dashboardApi.summary(month), dashboardApi.byCategory(month)])
+    Promise.all([service.summary(month), service.byCategory(month)])
       .then(([summaryData, byCategoryData]) => {
         setSummary(summaryData);
         setCategories(byCategoryData.categories);
       })
       .catch((err) => setError(formatApiError(err)))
       .finally(() => setLoading(false));
-  }, [month]);
+  }, [month, user]);
 
   const balance = summary ? Number(summary.balance) : 0;
   const incomeCategories = categories.filter((c) => c.type === 'INCOME');

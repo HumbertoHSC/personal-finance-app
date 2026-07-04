@@ -1,16 +1,22 @@
 import { useEffect, useState } from 'react';
 import { EntryTypeBadge } from '../components/EntryTypeBadge';
 import { TransactionForm } from '../components/TransactionForm';
+import { useAuth } from '../context/AuthContext';
 import { formatApiError } from '../lib/format-error';
 import { formatCurrency, formatDate } from '../lib/format';
 import { categoriesApi } from '../services/categories';
 import { transactionsApi, type TransactionInput } from '../services/transactions';
+import { demoCategoriesApi, demoTransactionsApi } from '../services/demo';
 import type { ApiMeta } from '../services/api';
 import type { Category, EntryType, Transaction, TransactionFilters } from '../types/api';
 
 const PER_PAGE = 10;
 
 export function TransactionsPage() {
+  const { user } = useAuth();
+  const categoryService = user ? categoriesApi : demoCategoriesApi;
+  const transactionService = user ? transactionsApi : demoTransactionsApi;
+
   const [categories, setCategories] = useState<Category[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [meta, setMeta] = useState<ApiMeta | null>(null);
@@ -29,8 +35,8 @@ export function TransactionsPage() {
   const [editing, setEditing] = useState<Transaction | null>(null);
 
   useEffect(() => {
-    categoriesApi.list().then(setCategories).catch(() => undefined);
-  }, []);
+    categoryService.list().then(setCategories).catch(() => undefined);
+  }, [user]);
 
   function loadTransactions() {
     setLoading(true);
@@ -43,7 +49,7 @@ export function TransactionsPage() {
       ...(filters.from && { from: filters.from }),
       ...(filters.to && { to: filters.to }),
     };
-    transactionsApi
+    transactionService
       .list(query)
       .then(({ items, meta }) => {
         setTransactions(items);
@@ -53,7 +59,7 @@ export function TransactionsPage() {
       .finally(() => setLoading(false));
   }
 
-  useEffect(loadTransactions, [filters, page]);
+  useEffect(loadTransactions, [filters, page, user]);
 
   function updateFilter<K extends keyof typeof filters>(key: K, value: (typeof filters)[K]) {
     setFilters((prev) => ({ ...prev, [key]: value }));
@@ -62,10 +68,10 @@ export function TransactionsPage() {
 
   async function handleSubmit(payload: TransactionInput) {
     if (editing) {
-      await transactionsApi.update(editing.id, payload);
+      await transactionService.update(editing.id, payload);
       setEditing(null);
     } else {
-      await transactionsApi.create(payload);
+      await transactionService.create(payload);
     }
     loadTransactions();
   }
@@ -74,7 +80,7 @@ export function TransactionsPage() {
     if (!window.confirm('Excluir esta transação?')) return;
     setRowError(null);
     try {
-      await transactionsApi.remove(id);
+      await transactionService.remove(id);
       if (editing?.id === id) setEditing(null);
       loadTransactions();
     } catch (err) {

@@ -1,10 +1,15 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { EntryTypeBadge } from '../components/EntryTypeBadge';
+import { useAuth } from '../context/AuthContext';
 import { formatApiError } from '../lib/format-error';
 import { categoriesApi } from '../services/categories';
+import { demoCategoriesApi } from '../services/demo';
 import type { Category, EntryType } from '../types/api';
 
 export function CategoriesPage() {
+  const { user } = useAuth();
+  const categoryService = user ? categoriesApi : demoCategoriesApi;
+
   const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [listError, setListError] = useState<string | null>(null);
@@ -20,21 +25,21 @@ export function CategoriesPage() {
 
   function loadCategories() {
     setLoading(true);
-    categoriesApi
+    categoryService
       .list()
       .then(setCategories)
       .catch((err) => setListError(formatApiError(err)))
       .finally(() => setLoading(false));
   }
 
-  useEffect(loadCategories, []);
+  useEffect(loadCategories, [user]);
 
   async function handleCreate(event: FormEvent) {
     event.preventDefault();
     setFormError(null);
     setSubmitting(true);
     try {
-      const created = await categoriesApi.create({ name, type });
+      const created = await categoryService.create({ name, type });
       setCategories((prev) => [...prev, created].sort((a, b) => a.name.localeCompare(b.name)));
       setName('');
     } catch (err) {
@@ -53,7 +58,7 @@ export function CategoriesPage() {
   async function handleRename(id: string) {
     setRowError(null);
     try {
-      const updated = await categoriesApi.update(id, { name: editingName });
+      const updated = await categoryService.update(id, { name: editingName });
       setCategories((prev) =>
         prev.map((c) => (c.id === id ? updated : c)).sort((a, b) => a.name.localeCompare(b.name)),
       );
@@ -67,7 +72,7 @@ export function CategoriesPage() {
     if (!window.confirm('Excluir esta categoria?')) return;
     setRowError(null);
     try {
-      await categoriesApi.remove(id);
+      await categoryService.remove(id);
       setCategories((prev) => prev.filter((c) => c.id !== id));
     } catch (err) {
       setRowError(formatApiError(err));
