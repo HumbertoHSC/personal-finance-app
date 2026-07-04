@@ -1,5 +1,8 @@
 // Client HTTP centralizado — todas as chamadas à API passam por aqui.
-const API_URL: string = import.meta.env.VITE_API_URL ?? 'http://localhost:3333';
+// Em produção (Vercel Services), frontend e backend ficam no mesmo domínio,
+// então o caminho relativo já resolve certo sem precisar de VITE_API_URL.
+const API_URL: string =
+  import.meta.env.VITE_API_URL ?? (import.meta.env.PROD ? '' : 'http://localhost:3333');
 
 export interface ApiMeta {
   total: number;

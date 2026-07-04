@@ -17,8 +17,7 @@ App fullstack de controle financeiro pessoal: cadastro de receitas/despesas, cat
 | Validação | Zod | Schemas reutilizáveis entre validação de entrada e tipos |
 | Frontend | React + Vite + React Router | Mais rápido de configurar que CRA; SPA simples é suficiente |
 | Gráficos | Tabela HTML + barra em CSS (sem lib) | Acessível por padrão (sem canvas), mais leve que Chart.js para um único gráfico de ranking — ver README § Decisões técnicas |
-| Deploy backend | Render ou Railway | Free tier com Postgres incluso |
-| Deploy frontend | Vercel | Deploy de SPA trivial |
+| Deploy | Vercel (Services) — frontend + backend no mesmo projeto | Um domínio só, roteado por `vercel.json` (`/api/*` → backend, resto → frontend); frontend e backend ficam same-origin, então cookie `httpOnly`/`SameSite=Strict` funciona sem fricção de CORS entre domínios diferentes — ver README § Decisões técnicas |
 
 ---
 
@@ -163,6 +162,7 @@ financa-simples/
 │   │   ├── types/api.ts         # tipos compartilhados com o backend
 │   │   └── App.tsx
 │   └── package.json
+├── vercel.json                  # Vercel Services: rotas /api/* → backend, resto → frontend
 └── README.md
 ```
 
@@ -177,7 +177,7 @@ financa-simples/
 | Dia 6-9 | CRUD de categorias e transações + validação Zod + testes manuais via Postman/Insomnia |
 | Dia 10-12 | Endpoints de dashboard (agregações SQL/Prisma) |
 | Dia 13-18 | Frontend: telas de login, listagem de transações, formulários, gráfico |
-| Dia 19-21 | Deploy (backend + banco no Render/Railway, frontend na Vercel) |
+| Dia 19-21 | Deploy (Vercel Services: frontend + backend no mesmo projeto, banco no Neon) |
 | Dia 22-25 | Testes automatizados básicos (pelo menos auth e um CRUD) |
 | Dia 26-30 | README caprichado, prints/gif, ajustes finais, revisão de código |
 
