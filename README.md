@@ -20,18 +20,20 @@ App fullstack de controle financeiro pessoal: cadastro de receitas e despesas, c
 
 ## Como rodar
 
-**Pré-requisitos:** Node.js 20+ e PostgreSQL rodando localmente.
+**Pré-requisitos:** Node.js 20+ e um PostgreSQL (local ou um free tier como [Neon](https://neon.tech)).
 
 ### Backend
 
 ```bash
 cd backend
-cp .env.example .env   # ajuste DATABASE_URL e gere segredos JWT
+cp .env.example .env   # ajuste DATABASE_URL/DIRECT_URL e gere segredos JWT
 npm install
-npx prisma migrate dev  # aplica a migration inicial (já versionada)
-npm run db:seed         # cria usuário demo + categorias + transações
-npm run dev             # API em http://localhost:3333
+npx prisma migrate deploy  # aplica a migration inicial (já versionada)
+npm run db:seed            # cria usuário demo + categorias + transações
+npm run dev                 # API em http://localhost:3333
 ```
+
+Usando Neon/Supabase: `DATABASE_URL` é a connection string do **pooler** (com `pgbouncer=true`), usada pela aplicação em runtime; `DIRECT_URL` é a conexão **direta**, usada só pelo Prisma Migrate — DDL e advisory locks não funcionam de forma confiável através de PgBouncer em modo transaction. Rodando Postgres local sem pooler, as duas variáveis apontam para a mesma URL.
 
 Usuário demo criado pelo seed: `demo@financasimples.dev` / senha `demo1234`.
 

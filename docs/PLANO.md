@@ -12,7 +12,7 @@ App fullstack de controle financeiro pessoal: cadastro de receitas/despesas, cat
 |---|---|---|
 | Backend | Node.js + Express + TypeScript | Você já domina JS/Node; TS é diferencial forte em vaga de eng. de software |
 | ORM | Prisma | Migrations versionadas, type-safety, produtivo |
-| Banco | PostgreSQL | Você já tem no stack; relacional combina com dados financeiros |
+| Banco | PostgreSQL (hospedado no Neon) | Relacional combina com dados financeiros; Neon dá Postgres real de graça sem precisar instalar nada local — só "dorme" e acorda sozinho, sem exigir reativação manual como o Supabase |
 | Auth | JWT + bcrypt | Padrão de mercado, simples de implementar bem |
 | Validação | Zod | Schemas reutilizáveis entre validação de entrada e tipos |
 | Frontend | React + Vite + React Router | Mais rápido de configurar que CRA; SPA simples é suficiente |
