@@ -18,6 +18,7 @@ App fullstack de controle financeiro pessoal: cadastro de receitas/despesas, cat
 | Frontend | React + Vite + React Router | Mais rápido de configurar que CRA; SPA simples é suficiente |
 | Gráficos | Tabela HTML + barra em CSS (sem lib) | Acessível por padrão (sem canvas), mais leve que Chart.js para um único gráfico de ranking — ver README § Decisões técnicas |
 | Deploy | Vercel (Services) — frontend + backend no mesmo projeto | Um domínio só, roteado por `vercel.json` (`/api/*` → backend, resto → frontend); frontend e backend ficam same-origin, então cookie `httpOnly`/`SameSite=Strict` funciona sem fricção de CORS entre domínios diferentes — ver README § Decisões técnicas |
+| Testes | Vitest + Supertest, repositories fakes | API real de ponta a ponta sem precisar de um Postgres de teste — ver README § Decisões técnicas |
 
 ---
 

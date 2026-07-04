@@ -40,6 +40,15 @@ Usuário demo criado pelo seed: `demo@financasimples.dev` / senha `demo1234`.
 
 Health check: `GET http://localhost:3333/api/v1/health`
 
+### Testes
+
+```bash
+cd backend
+npm test   # Vitest: auth, categorias e transações
+```
+
+Os testes sobem a API real (rotas → controllers → services) com os repositories trocados por fakes em memória — não precisam de Postgres nem de rede, então rodam do mesmo jeito local ou em CI.
+
 ### Frontend
 
 ```bash
@@ -70,6 +79,7 @@ Como frontend e backend ficam no mesmo domínio (same-origin), **não é preciso
 - **JWT em cookie `httpOnly`, não em `localStorage`.** Protege contra roubo de token via XSS.
 - **Frontend e backend no mesmo domínio (Vercel Services), não em domínios separados.** Elimina CORS entre eles e permite `SameSite=Strict` no cookie sem fricção — a alternativa (backend num host, frontend em outro) exigiria `SameSite=None` ou configuração extra de CORS com credentials, superfície de ataque maior pra um ganho nenhum aqui.
 - **Dados fictícios no lugar de exigir login.** Quem visita o app sem conta vê o Dashboard/Transações/Categorias populados com dados de exemplo, com CRUD funcionando em memória (`frontend/src/services/demo.ts`) — sem tocar a API real nem persistir nada. Ao logar, as mesmas páginas trocam para os dados reais do usuário. Existe pra quem só quer clicar e ver o app funcionando, sem precisar criar conta antes.
+- **Testes de integração com repository fake, não um Postgres de teste.** A arquitetura em camadas (`routes → controllers → services → repositories`) dá um ponto de substituição natural: os testes trocam os `repositories` por uma versão em memória (`backend/tests/support/fake-repositories.ts`) e batem na API real por cima disso via Supertest. Cobre toda a regra de negócio (validação, autorização por `userId`, mensagens de erro) sem precisar subir/limpar um banco a cada run — o trade-off consciente é não testar o SQL gerado pelo Prisma em si.
 
 ## Progresso
 
@@ -78,5 +88,5 @@ Como frontend e backend ficam no mesmo domínio (same-origin), **não é preciso
 - [x] CRUD de categorias e transações + validação Zod
 - [x] Endpoints de dashboard (agregações)
 - [x] Frontend: login, transações, formulários, gráficos
-- [ ] Deploy
-- [ ] Testes automatizados
+- [x] Deploy (Vercel Services + Neon)
+- [x] Testes automatizados (auth, categorias, transações — 17 testes via Vitest)
