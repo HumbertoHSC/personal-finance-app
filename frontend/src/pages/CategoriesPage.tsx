@@ -1,6 +1,6 @@
 import { useEffect, useState, type FormEvent } from 'react';
 import { EntryTypeBadge } from '../components/EntryTypeBadge';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import { formatApiError } from '../lib/format-error';
 import { categoriesApi } from '../services/categories';
 import { demoCategoriesApi } from '../services/demo';
@@ -32,7 +32,7 @@ export function CategoriesPage() {
       .finally(() => setLoading(false));
   }
 
-  useEffect(loadCategories, [user]);
+  useEffect(loadCategories, [categoryService]);
 
   async function handleCreate(event: FormEvent) {
     event.preventDefault();

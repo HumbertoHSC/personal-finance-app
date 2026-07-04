@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { EntryTypeBadge } from '../components/EntryTypeBadge';
 import { TransactionForm } from '../components/TransactionForm';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import { formatApiError } from '../lib/format-error';
 import { formatCurrency, formatDate } from '../lib/format';
 import { categoriesApi } from '../services/categories';
@@ -36,7 +36,7 @@ export function TransactionsPage() {
 
   useEffect(() => {
     categoryService.list().then(setCategories).catch(() => undefined);
-  }, [user]);
+  }, [categoryService]);
 
   function loadTransactions() {
     setLoading(true);
@@ -59,7 +59,7 @@ export function TransactionsPage() {
       .finally(() => setLoading(false));
   }
 
-  useEffect(loadTransactions, [filters, page, user]);
+  useEffect(loadTransactions, [filters, page, transactionService]);
 
   function updateFilter<K extends keyof typeof filters>(key: K, value: (typeof filters)[K]) {
     setFilters((prev) => ({ ...prev, [key]: value }));

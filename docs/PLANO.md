@@ -186,7 +186,7 @@ financa-simples/
 
 ## 7. O que vai impressionar no README final
 
-- GIF do fluxo: login → adicionar transação → ver gráfico atualizar
-- Link de demo funcionando (não só "clone e rode")
-- Seção explicando decisões técnicas (por que Decimal, por que JWT em cookie, etc.) — mostra maturidade, não só "sei fazer CRUD"
-- Badge de cobertura de testes, se implementar
+- [x] GIF do fluxo: dashboard fictício → adicionar transação → ver gráfico atualizar (`docs/screenshots/demo-flow.gif`)
+- [ ] Link de demo funcionando (não só "clone e rode") — falta colar a URL da Vercel no README
+- [x] Seção explicando decisões técnicas (por que Decimal, por que JWT em cookie, etc.) — mostra maturidade, não só "sei fazer CRUD"
+- [x] Badges de stack no topo do README (Node, TypeScript, Express, Prisma, React, Vitest)

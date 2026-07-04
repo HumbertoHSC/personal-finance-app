@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { CategoryBarTable } from '../components/CategoryBarTable';
 import { StatTile } from '../components/StatTile';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 import { formatApiError } from '../lib/format-error';
 import { currentMonth, formatCurrency } from '../lib/format';
 import { dashboardApi } from '../services/dashboard';
@@ -28,7 +28,7 @@ export function DashboardPage() {
       })
       .catch((err) => setError(formatApiError(err)))
       .finally(() => setLoading(false));
-  }, [month, user]);
+  }, [month, service]);
 
   const balance = summary ? Number(summary.balance) : 0;
   const incomeCategories = categories.filter((c) => c.type === 'INCOME');
